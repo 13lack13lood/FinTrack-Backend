@@ -76,6 +76,27 @@ def stock_news_analysis(stock_ticker):
 
     return output, mean_df
 
+def general_stock_news_scrape():
+    url = "https://stockanalysis.com/news/all-stocks/"
 
-stock_news_analysis("AAPL")
+    req = Request(url=url, headers={"user-agent": "stock-app"})
+    response = urlopen(req)
+    html = BeautifulSoup(response, features="html.parser")
 
+    news_table = html.find_all("div", {"class": "gap-4"})
+
+    for news in news_table:
+        timestamp = news.div.find("div", {"class": "text-faded"})
+        print(timestamp.text)
+        tickers = news.div.find_all("a", {"class": "ticker"})
+        for ticker in tickers:
+            print(ticker.text)
+        print(news.div.h3.a.text)
+        print(news.div.p.text)
+        print("\n")
+
+
+# stock_news_analysis("AAPL")
+
+
+general_stock_news_scrape()
