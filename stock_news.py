@@ -3,6 +3,7 @@ from urllib.request import urlopen, Request
 from bs4 import BeautifulSoup
 from fin_bert import stock_news_analysis
 
+
 def get_finviz_headlines(stock_ticker):
     url = "https://finviz.com/quote.ashx?t=" + stock_ticker.capitalize()
 
@@ -71,9 +72,7 @@ def finviz_news(ticker):
 
     mean_df = output[["date", "compound"]].groupby(["date"]).mean().reset_index().iloc[::-1]
 
-    mean_df.to_excel("mean.xlsx", index=False)
-
-    return output, mean_df
+    return output.to_json(), mean_df.set_index("date").to_json()
 
 
 def general_stock_news():
@@ -82,8 +81,5 @@ def general_stock_news():
     output = stock_news_analysis(news)
 
     return output
-
-# general_stock_news()
-finviz_news("aapl")
 
 

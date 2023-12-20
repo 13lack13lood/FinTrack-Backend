@@ -4,15 +4,12 @@ import torch
 
 
 def finbert_analyze(headlines_list):
-    print(headlines_list)
-
     tokenizer = AutoTokenizer.from_pretrained("ProsusAI/finbert")
     model = AutoModelForSequenceClassification.from_pretrained("ProsusAI/finbert")
 
     inputs = tokenizer(headlines_list, padding=True, truncation=True, return_tensors='pt')
 
     outputs = model(**inputs)
-    print(outputs.logits.shape)
 
     predictions = torch.nn.functional.softmax(outputs.logits, dim=-1)
 
@@ -24,9 +21,7 @@ def finbert_analyze(headlines_list):
              "Negative": negative,
              "Neutral": neutral}
 
-    df = pd.DataFrame(table)
-
-    print(df.to_numpy())
+    df = pd.DataFrame(table).round(2)
 
     return df
 
@@ -41,7 +36,5 @@ def stock_news_analysis(headlines):
                                       else float(x["Positive"]) if float(x["Positive"]) > float(x["Negative"])
                                       else -float(x["Negative"]), axis=1)
 
-    output.to_excel("text.xlsx", index=False)
-
-    return output
+    return output.round(2)
 
