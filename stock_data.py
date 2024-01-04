@@ -3,6 +3,7 @@ from urllib.request import urlopen, Request
 from bs4 import BeautifulSoup
 import json
 from stock_news import finviz_news
+from datetime import date
 
 
 def get_stock(ticker):
@@ -25,7 +26,7 @@ def get_stock(ticker):
 
     try:
         stock_info = get_stock_info(ticker)
-        history = get_stock_history(stock)
+        history = get_stock_history(ticker)
     except:
         stock_info = "null"
         history = "null"
@@ -77,21 +78,28 @@ def get_stock(ticker):
     return data
 
 
-def get_stock_history(stock):
-    history_df_max = stock.history(period="max", interval="1d")[["Open", "High", "Low", "Close", "Volume"]]
+def get_stock_history(stock_ticker, period="1d"):
+    stock = yf.Ticker(stock_ticker.capitalize())
 
-    history_max_json = history_df_max.round(2).to_json()
+    if period == "1d":
+        return json.loads(stock.history(period="1d", interval="1m")[["Open"]].round(2).to_json())
 
-    history_df_min = stock.history(period="5d", interval="5m")[["Open", "High", "Low", "Close", "Volume"]]
+    if period == "5d":
+        return json.loads(stock.history(period="5d", interval="5m")[["Open"]].round(2).to_json())
 
-    history_min_json = history_df_min.round(2).to_json()
+    if period == "1mo":
+        return json.loads(stock.history(period="1mo", interval="1h")[["Open"]].round(2).to_json())
 
-    history = {
-        "min_data": json.loads(history_min_json),
-        "max_data": json.loads(history_max_json)
-    }
+    if period == "ytd":
+        return json.loads(stock.history(start=date(date.today().year, 1, 1).strftime("%Y-%m-%d"), interval="1d")[["Open"]].round(2).to_json())
 
-    return history
+    if period == "5y":
+        return json.loads(stock.history(period="5y", interval="5d")[["Open"]].round(2).to_json())
+
+    if period == "max":
+        return json.loads(stock.history(period="max", interval="1wk")[["Open"]].round(2).to_json())
+
+    return json.loads(stock.history(period=period, interval="1d")[["Open"]].round(2).to_json())
 
 
 def get_income(stock):
@@ -172,7 +180,7 @@ def get_stock_info(stock_ticker):
     info_table_left = html.find("table", {"data-test": "overview-info"}).find_all("tr")
 
     for row in info_table_left:
-        key = row.td.text
+        key = row.td.text.strip()
         full_text = row.text
         value = full_text.replace(key, "").strip()
 
@@ -181,7 +189,7 @@ def get_stock_info(stock_ticker):
     info_table_right = html.find("table", {"data-test": "overview-quote"}).find_all("tr")
 
     for row in info_table_right:
-        key = row.td.text
+        key = row.td.text.strip()
         full_text = row.text
         value = full_text.replace(key, "").strip()
 
@@ -190,9 +198,8 @@ def get_stock_info(stock_ticker):
     return data
 
 
-def get_wiki(stock_ticker):
-    name = get_stock_full_name(stock_ticker).replace(" ", "_")
-    url = "https://en.wikipedia.org/wiki/" + name
+def get_wiki(stock_ticker, url=None):
+    url = url if url is not None else "https://en.wikipedia.org/wiki/" + get_stock_full_name(stock_ticker).replace(" ", "_")
 
     req = Request(url=url, headers={"user-agent": "stock-app"})
     response = urlopen(req)

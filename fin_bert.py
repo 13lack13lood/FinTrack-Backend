@@ -36,5 +36,5 @@ def stock_news_analysis(headlines):
                                       else float(x["Positive"]) if float(x["Positive"]) > float(x["Negative"])
                                       else -float(x["Negative"]), axis=1)
 
-    return output.round(2)
+    return output.drop(columns=["Positive", "Negative", "Neutral"]).round(2)
 
