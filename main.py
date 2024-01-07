@@ -2,7 +2,6 @@ from flask import Flask, request
 from flask_cors import CORS, cross_origin
 import stock_data
 import general_stock_data
-import json
 
 import stock_news
 

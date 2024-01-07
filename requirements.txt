@@ -15,6 +15,7 @@ Flask==3.0.0
 Flask-Cors==4.0.0
 frozendict==2.3.10
 fsspec==2023.12.2
+gunicorn==21.2.0
 html5lib==1.1
 huggingface-hub==0.19.4
 idna==3.6
@@ -32,7 +33,6 @@ packaging==23.2
 pandas==2.1.4
 parse==1.20.0
 peewee==3.17.0
-py-mon==1.1.1
 pyee==8.2.2
 pyppeteer==1.0.2
 pyquery==2.0.0
