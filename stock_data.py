@@ -6,58 +6,62 @@ from stock_news import finviz_news
 from datetime import date
 
 
+def quick_info(ticker):
+    return json.loads(yf.Ticker(ticker.capitalize()).history(period="1d", interval="1d")[["Open", "High", "Low", "Close", "Volume"]].round(2).iloc[0].to_json())
+
+
 def get_stock(ticker):
     stock = yf.Ticker(ticker.capitalize())
 
     try:
         name = get_stock_full_name(ticker)
     except:
-        name = "null"
+        name = None
 
     try:
         info = get_company_info(ticker)
     except:
-        info = "null"
+        info = None
 
     try:
         wiki = get_wiki(ticker)
     except:
-        wiki = "null"
+        wiki = None
 
     try:
         stock_info = get_stock_info(ticker)
         history = get_stock_history(ticker)
     except:
-        stock_info = "null"
-        history = "null"
+        stock_info = None
+        history = None
 
     try:
         income = get_income(stock)
         income_quarter = get_income_quarter(stock)
     except:
-        income = "null"
-        income_quarter = "null"
+        income = None
+        income_quarter = None
 
     try:
         balance = get_balance(stock)
         balance_quarter = get_balance_quarter(stock)
     except:
-        balance = "null"
-        balance_quarter = "null"
+        balance = None
+        balance_quarter = None
 
     try:
         cashflow = get_cashflow(stock)
         cashflow_quarter = get_cashflow_quarter(stock)
     except:
-        cashflow = "null"
-        cashflow_quarter = "null"
+        cashflow = None
+        cashflow_quarter = None
 
     try:
         news, news_mean = finviz_news(ticker)
         news = json.loads(news)
         news_mean = json.loads(news_mean)
     except:
-        news, news_mean = "null", "null"
+        news, news_mean = None, None
 
     data = {
         "name": name,

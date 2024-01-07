@@ -69,7 +69,7 @@ def find_popular_stocks_preview(url):
         data = {
             "ticker": stock.a.text,
             "name": stock.find("td", {"class": "slw"}).text,
-            "change": stock.div.text
+            "change": stock.span.text
         }
         stocks.append(data)
 
@@ -99,6 +99,7 @@ def find_popular_stocks(url):
         stocks.append(data)
 
     return stocks
+
 
 def find_popular_stocks_active():
     req = Request(url="https://stockanalysis.com/markets/active/", headers={"user-agent": "stock-app"})

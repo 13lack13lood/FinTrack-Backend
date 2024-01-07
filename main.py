@@ -11,13 +11,16 @@ cors = CORS(app)
 
 
 @cross_origin()
+@app.route("/quick_info/<ticker>", methods=["GET"])
+def quick_info(ticker):
+    data = stock_data.quick_info(ticker)
+    return data
+
+
+@cross_origin()
 @app.route("/stock/<ticker>", methods=["GET"])
 def stock_info(ticker):
     data = stock_data.get_stock(ticker)
-
-    # import json
-    # with open('data.json', 'w') as f:
-    #     json.dump(data, f)
     return data
 
 
