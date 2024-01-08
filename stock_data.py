@@ -60,11 +60,11 @@ def get_stock(ticker):
         cashflow_quarter = None
 
     try:
-        news, news_mean = finviz_news(ticker)
+        news = finviz_news(ticker)
         news = json.loads(news)
-        news_mean = json.loads(news_mean)
+        # news_mean = json.loads(news_mean)
     except:
-        news, news_mean = None, None
+        news = None
 
     data = {
         "name": name,
@@ -79,7 +79,7 @@ def get_stock(ticker):
         "cashflow": cashflow,
         "cashflow_quarter": cashflow_quarter,
         "news": news,
-        "news_mean": news_mean
+        # "news_mean": news_mean
     }
 
     return data
@@ -177,10 +177,8 @@ def get_company_info(stock_ticker):
 # gets fundamental stock info (market cap, eps, pe, etc)
 def get_stock_info(stock_ticker):
     url = "https://stockanalysis.com/stocks/" + stock_ticker + "/"
-    # print(url)
     req = Request(url=url, headers={"user-agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64)"})
-    # cj = CookieJar()
-    # opener = build_opener(HTTPCookieProcessor(cj))
+
     response = urlopen(req)
     # response = opener.open(req)
     html = BeautifulSoup(response, features="html.parser")
