@@ -68,20 +68,18 @@ def general_stock_news_scrape():
 def finviz_news(ticker):
     news = get_finviz_headlines(ticker)
 
-    # output = stock_news_analysis(news)
+    output = stock_news_analysis(news)
 
-    # mean_df = output[["date", "compound"]].groupby(["date"]).mean().reset_index().iloc[::-1]
+    mean_df = output[["date", "compound"]].groupby(["date"]).mean().reset_index().iloc[::-1]
 
-    # return output.to_json(), mean_df.set_index("date").round(2).to_json()
-
-    return news.to_json()
+    return output.to_json(), mean_df.set_index("date").round(2).to_json()
 
 
 def general_stock_news():
     news = general_stock_news_scrape()
 
-    # output = stock_news_analysis(news)
+    output = stock_news_analysis(news)
 
-    return news.to_json()
+    return output.to_json()
 
 

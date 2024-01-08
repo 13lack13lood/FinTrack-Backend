@@ -1,15 +1,13 @@
 import yfinance as yf
-from urllib.request import urlopen, Request, build_opener, HTTPCookieProcessor
+from urllib.request import urlopen, Request
 from bs4 import BeautifulSoup
 import json
 from stock_news import finviz_news
 from datetime import date
-from http.cookiejar import CookieJar
 
 
 def quick_info(ticker):
     return json.loads(yf.Ticker(ticker.capitalize()).history(period="1d", interval="1d")[["Open", "High", "Low", "Close", "Volume"]].round(2).iloc[0].to_json())
-
 
 
 def get_stock(ticker):
@@ -60,11 +58,11 @@ def get_stock(ticker):
         cashflow_quarter = None
 
     try:
-        news = finviz_news(ticker)
+        news, news_mean = finviz_news(ticker)
         news = json.loads(news)
-        # news_mean = json.loads(news_mean)
+        news_mean = json.loads(news_mean)
     except:
-        news = None
+        news, news_mean = None, None
 
     data = {
         "name": name,
@@ -79,7 +77,7 @@ def get_stock(ticker):
         "cashflow": cashflow,
         "cashflow_quarter": cashflow_quarter,
         "news": news,
-        # "news_mean": news_mean
+        "news_mean": news_mean
     }
 
     return data
@@ -180,7 +178,6 @@ def get_stock_info(stock_ticker):
     req = Request(url=url, headers={"user-agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64)"})
 
     response = urlopen(req)
-    # response = opener.open(req)
     html = BeautifulSoup(response, features="html.parser")
 
     data = {}
