@@ -58,11 +58,12 @@ def get_stock(ticker):
         cashflow_quarter = None
 
     try:
-        news, news_mean = finviz_news(ticker)
+        news = finviz_news(ticker)
         news = json.loads(news)
-        news_mean = json.loads(news_mean)
+        # news_mean = json.loads(news_mean)
     except:
-        news, news_mean = None, None
+        news = None
+        # news, news_mean = None, None
 
     data = {
         "name": name,
@@ -77,7 +78,7 @@ def get_stock(ticker):
         "cashflow": cashflow,
         "cashflow_quarter": cashflow_quarter,
         "news": news,
-        "news_mean": news_mean
+        # "news_mean": news_mean
     }
 
     return data

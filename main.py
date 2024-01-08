@@ -10,6 +10,14 @@ cors = CORS(app)
 
 
 @cross_origin()
+@app.route("/", methods=["GET"])
+def home(ticker):
+    return {
+        "response": "connected"
+    }
+
+
+@cross_origin()
 @app.route("/quick_info/<ticker>", methods=["GET"])
 def quick_info(ticker):
     data = stock_data.quick_info(ticker)
@@ -93,6 +101,7 @@ def dji_data():
 @app.route("/index/^IXIC", methods=["GET"])
 def nasdaq_comp_data():
     return general_stock_data.nasdaq_comp_data()
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
