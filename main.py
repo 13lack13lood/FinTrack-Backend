@@ -11,7 +11,7 @@ cors = CORS(app)
 
 @cross_origin()
 @app.route("/", methods=["GET"])
-def home(ticker):
+def home():
     return {
         "response": "connected"
     }
