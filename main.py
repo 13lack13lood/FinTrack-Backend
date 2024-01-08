@@ -1,7 +1,7 @@
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 import stock_data
-import general_stock_datad
+import general_stock_data
 
 import stock_news
 
@@ -93,7 +93,6 @@ def dji_data():
 @app.route("/index/^IXIC", methods=["GET"])
 def nasdaq_comp_data():
     return general_stock_data.nasdaq_comp_data()
-
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

@@ -1,13 +1,15 @@
 import yfinance as yf
-from urllib.request import urlopen, Request
+from urllib.request import urlopen, Request, build_opener, HTTPCookieProcessor
 from bs4 import BeautifulSoup
 import json
 from stock_news import finviz_news
 from datetime import date
+from http.cookiejar import CookieJar
 
 
 def quick_info(ticker):
     return json.loads(yf.Ticker(ticker.capitalize()).history(period="1d", interval="1d")[["Open", "High", "Low", "Close", "Volume"]].round(2).iloc[0].to_json())
+
 
 
 def get_stock(ticker):
@@ -28,12 +30,13 @@ def get_stock(ticker):
     except:
         wiki = None
 
-    try:
-        stock_info = get_stock_info(ticker)
-        history = get_stock_history(ticker)
-    except:
-        stock_info = None
-        history = None
+    # try:
+    stock_info = get_stock_info(ticker)
+
+    history = get_stock_history(ticker)
+    # except:
+    #     stock_info = None
+    #     history = None
 
     try:
         income = get_income(stock)
@@ -145,7 +148,7 @@ def get_stock_full_name(stock_ticker):
 
 # gets company info (industry, ipo date, sector, etc.)
 def get_company_info(stock_ticker):
-    url = "https://stockanalysis.com/stocks/" + stock_ticker.capitalize()
+    url = "https://stockanalysis.com/stocks/" + stock_ticker + "/"
 
     req = Request(url=url, headers={"user-agent": "stock-app"})
     response = urlopen(req)
@@ -173,14 +176,16 @@ def get_company_info(stock_ticker):
 
 # gets fundamental stock info (market cap, eps, pe, etc)
 def get_stock_info(stock_ticker):
-    url = "https://stockanalysis.com/stocks/" + stock_ticker.capitalize()
-
-    req = Request(url=url, headers={"user-agent": "stock-app"})
+    url = "https://stockanalysis.com/stocks/" + stock_ticker + "/"
+    # print(url)
+    req = Request(url=url, headers={"user-agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64)"})
+    # cj = CookieJar()
+    # opener = build_opener(HTTPCookieProcessor(cj))
     response = urlopen(req)
+    # response = opener.open(req)
     html = BeautifulSoup(response, features="html.parser")
 
     data = {}
-
     info_table_left = html.find("table", {"data-test": "overview-info"}).find_all("tr")
 
     for row in info_table_left:
