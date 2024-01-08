@@ -5,7 +5,7 @@ from fin_bert import stock_news_analysis
 
 
 def get_finviz_headlines(stock_ticker):
-    url = "https://finviz.com/quote.ashx?t=" + stock_ticker.capitalize()
+    url = "https://finviz.com/quote.ashx?t=" + stock_ticker + "&p=d"
 
     req = Request(url=url, headers={"user-agent": "stock-app"})
     response = urlopen(req)
@@ -31,8 +31,6 @@ def get_finviz_headlines(stock_ticker):
         data.append([day, time, text, link, publisher])
 
     dataframe = pd.DataFrame(data, columns=['date', 'time', 'headline', 'link', 'publisher'])
-
-    print(dataframe)
 
     return dataframe
 
@@ -61,8 +59,6 @@ def general_stock_news_scrape():
         data.append([link, img_src, timestamp, publisher, headline, description, ticker_array])
 
     stock_news_df = pd.DataFrame(data, columns=["link", "img_src", "timestamp", "publisher", "headline", "description", "tickers"])
-
-    stock_news_df.to_excel("output.xlsx", index=False)
 
     return stock_news_df
 

@@ -28,13 +28,13 @@ def get_stock(ticker):
     except:
         wiki = None
 
-    # try:
-    stock_info = get_stock_info(ticker)
+    try:
+        stock_info = get_stock_info(ticker)
 
-    history = get_stock_history(ticker)
-    # except:
-    #     stock_info = None
-    #     history = None
+        history = get_stock_history(ticker)
+    except:
+        stock_info = None
+        history = None
 
     try:
         income = get_income(stock)
