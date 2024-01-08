@@ -32,6 +32,8 @@ def get_finviz_headlines(stock_ticker):
 
     dataframe = pd.DataFrame(data, columns=['date', 'time', 'headline', 'link', 'publisher'])
 
+    print(dataframe)
+
     return dataframe
 
 
