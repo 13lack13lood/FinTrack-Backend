@@ -1,7 +1,5 @@
 from urllib.request import urlopen, Request
 from bs4 import BeautifulSoup
-import json
-import yfinance as yf
 import stock_data
 
 
@@ -69,7 +67,7 @@ def find_popular_stocks_preview(url):
         data = {
             "ticker": stock.a.text,
             "name": stock.find("td", {"class": "slw"}).text,
-            "change": stock.span.text
+            "change": stock.find("td", {"class": "rg"}).text
         }
         stocks.append(data)
 
