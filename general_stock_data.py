@@ -75,7 +75,7 @@ def find_popular_stocks_preview(url):
         data = {
             "ticker": stock.a.text,
             "name": stock.find("td", {"class": "slw"}).text,
-            "change": change.text
+            "change": change
         }
         stocks.append(data)
 
