@@ -1,7 +1,6 @@
 import pandas as pd
 from urllib.request import urlopen, Request
 from bs4 import BeautifulSoup
-from fin_bert import stock_news_analysis
 
 
 def get_stock_headlines(stock_ticker):
