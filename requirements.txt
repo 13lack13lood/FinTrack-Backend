@@ -3,3 +3,4 @@ yfinance~=0.2.33
 bs4~=0.0.1
 beautifulsoup4~=4.12.2
 pandas~=2.1.4
+gunicorn==21.2.0
