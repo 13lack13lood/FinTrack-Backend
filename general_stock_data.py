@@ -64,13 +64,15 @@ def find_popular_stocks_preview(url):
     stocks = []
 
     for stock in stock_table:
-        change = stock.find("td", {"class": "rg"}).text
+        change = stock.find("td", {"class": "rg"})
 
         if change is None:
-            change = stock.find("td", {"class": "rr"}).text
+            change = stock.find("td", {"class": "rr"})
 
         if change is None:
             change = "-"
+        else:
+            change = change.text
 
         data = {
             "ticker": stock.a.text,
